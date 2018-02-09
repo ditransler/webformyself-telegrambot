@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# IDE/Editors
+.idea
+
+# logs
+logs
+*.log
+npm-debug.log*
+
+# Private
+token.txt
+
+# Misc
+.DS_Store
+Thumbs.db
