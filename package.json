@@ -6,7 +6,9 @@
     "node-telegram-bot-api": "^0.30.0"
   },
   "devDependencies": {},
-  "scripts": {},
+  "scripts": {
+    "start":"node index.js"
+  },
   "author": "Dmitriy Beglov",
   "license": "MIT"
 }

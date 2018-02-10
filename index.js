@@ -11,11 +11,18 @@ const TOKEN = fs.readFileSync(toketPath, 'utf8', (err, data) => {
     return data;
 });
 
+console.log('Bot has been started ...');
+
 const bot = new TelegramBot(TOKEN, {
-    polling: true
+    polling: {
+        interval: 300,
+        autoStart: true,
+        params: {
+          timeout: 10
+        }
+      }
 });
 
-bot.on('message', (msg) => {
-    console.log(msg);
-    bot.sendMessage(msg.chat.id, `Hello, ${msg.from.first_name}!`);
+bot.on('message', msg => {
+    bot.sendMessage(msg.chat.id, `I'm alive!`);
 });
