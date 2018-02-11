@@ -2,13 +2,15 @@
   "name": "webformyself-telegrambot",
   "version": "0.0.1",
   "description": "Edu project for the Telegram-bot master course by WebForMyself",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Dmitriy Beglov",
+  "license": "MIT",
   "dependencies": {
     "node-telegram-bot-api": "^0.30.0"
   },
-  "devDependencies": {},
-  "scripts": {
-    "start":"node index.js"
-  },
-  "author": "Dmitriy Beglov",
-  "license": "MIT"
+  "devDependencies": {
+    "nodemon": "^1.14.12"
+  }
 }
