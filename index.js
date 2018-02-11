@@ -2,6 +2,7 @@ process.env["NTBA_FIX_319"] = 1; // fix fot the node-telegram-bot-api module's i
 
 const fs = require('fs');
 const path = require('path');
+const debug = require('./helpers');
 const TelegramBot = require('node-telegram-bot-api');
 const toketPath = path.resolve(__dirname, 'token.txt');
 const TOKEN = fs.readFileSync(toketPath, 'utf8', (err, data) => {
@@ -24,5 +25,12 @@ const bot = new TelegramBot(TOKEN, {
 });
 
 bot.on('message', msg => {
-    bot.sendMessage(msg.chat.id, `I'm alive!`);
+    const { id } = msg.chat;
+
+    if (msg.text.toLowerCase() === 'hello') {
+        bot.sendMessage(id, `Hello, ${msg.from.first_name}!`);
+    } else {
+        bot.sendMessage(id, debug(msg));
+    }
+
 });
