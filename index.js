@@ -28,7 +28,9 @@ bot.on('message', msg => {
     const { id } = msg.chat;
 
     if (msg.text.toLowerCase() === 'hello') {
-        bot.sendMessage(id, `Hello, ${msg.from.first_name}!`);
+        bot.sendMessage(id, `Hello, ${msg.from.first_name}!`)
+            .then(() => console.log('The message has been sent'))
+            .catch((error) => console.log('Error has occurred', error));
     } else {
         bot.sendMessage(id, debug(msg));
     }
