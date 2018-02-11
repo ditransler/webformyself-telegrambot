@@ -24,15 +24,14 @@ const bot = new TelegramBot(TOKEN, {
       }
 });
 
-bot.on('message', msg => {
+bot.onText(/\/start/, msg => {
     const { id } = msg.chat;
 
-    if (msg.text.toLowerCase() === 'hello') {
-        bot.sendMessage(id, `Hello, ${msg.from.first_name}!`)
-            .then(() => console.log('The message has been sent'))
-            .catch((error) => console.log('Error has occurred', error));
-    } else {
-        bot.sendMessage(id, debug(msg));
-    }
+    bot.sendMessage(id, debug(msg));
+});
 
+bot.onText(/\/help (.+)/, (msg, [source, match]) => {
+    const { id } = msg.chat;
+
+    bot.sendMessage(id, debug(match));
 });
