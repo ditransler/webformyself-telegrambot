@@ -24,14 +24,16 @@ const bot = new TelegramBot(TOKEN, {
       }
 });
 
-bot.onText(/\/start/, msg => {
-    const { id } = msg.chat;
+bot.on('message', msg => {
+    const html = `
+        <strong>Hello, ${msg.from.first_name}</strong>
+        <i>Test Message</i>
+        <pre>
+            ${debug(msg)}
+        </pre>
+    `;
 
-    bot.sendMessage(id, debug(msg));
-});
-
-bot.onText(/\/help (.+)/, (msg, [source, match]) => {
-    const { id } = msg.chat;
-
-    bot.sendMessage(id, debug(match));
+    bot.sendMessage(msg.chat.id, html, {
+        parse_mode: 'HTML'
+    });
 });
