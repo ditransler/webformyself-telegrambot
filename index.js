@@ -25,10 +25,36 @@ const bot = new TelegramBot(TOKEN, {
 });
 
 bot.on('message', msg => {
-    setTimeout(() => {
-        bot.sendMessage(msg.chat.id, `https://google.com`, {
-            disable_web_page_preview: true,
-            disable_notification: true
+    const { id:chatId } = msg.chat;
+
+    if (msg.text === 'Close') {
+        bot.sendMessage(chatId, 'Closing keyboard...', {
+            reply_markup: {
+                remove_keyboard: true
+            }
         });
-    }, 4000);
+    } else if (msg.text === 'Answer') {
+        bot.sendMessage(chatId, 'Answering...', {
+            reply_markup: {
+                force_reply: true
+            }
+        });
+    } else {
+        bot.sendMessage(chatId, 'Keyboard', {
+            reply_markup: {
+                keyboard: [
+                    [{
+                        text: 'Send geolocation',
+                        request_location: true
+                    }],
+                    ['Answer', 'Close'],
+                    [{
+                        text: 'Send contact',
+                        request_contact: true
+                    }]
+                ],
+                one_time_keyboard: true
+            }
+        });
+    }
 });
