@@ -25,15 +25,12 @@ const bot = new TelegramBot(TOKEN, {
 });
 
 bot.on('message', msg => {
-    const html = `
-        <strong>Hello, ${msg.from.first_name}</strong>
-        <i>Test Message</i>
-        <pre>
-            ${debug(msg)}
-        </pre>
+    const markdown = `
+        *Hello, ${msg.from.first_name}*
+        _italic text_
     `;
 
-    bot.sendMessage(msg.chat.id, html, {
-        parse_mode: 'HTML'
+    bot.sendMessage(msg.chat.id, markdown, {
+        parse_mode: 'Markdown'
     });
 });
