@@ -69,6 +69,9 @@ bot.on('callback_query', query => {
                 }
             });
             break;
+        case 'delete':
+            bot.deleteMessage(chat.id, message_id);
+            break;
     }
 
     bot.answerCallbackQuery(query.id);
