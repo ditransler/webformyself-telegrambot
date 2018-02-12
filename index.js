@@ -55,6 +55,11 @@ bot.on('callback_query', query => {
             // to, from, what
             bot.forwardMessage(chat.id, chat.id, message_id);
             break;
+        case 'reply':
+            bot.sendMessage(chat.id, 'Answer the message...', {
+                reply_to_message_id: message_id
+            });
+            break;
     }
 
     bot.answerCallbackQuery(query.id);
