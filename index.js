@@ -14,6 +14,29 @@ const TOKEN = fs.readFileSync(toketPath, 'utf8', (err, data) => {
 
 console.log('Bot has been started ...');
 
+const inline_keyboard = [
+    [
+        {
+            text: 'Forward',
+            callback_data: 'forward'
+        },
+        {
+            text: 'Reply',
+            callback_data: 'reply'
+        }
+    ],
+    [
+        {
+            text: 'Edit',
+            callback_data: 'edit'
+        },
+        {
+            text: 'Delete',
+            callback_data: 'delete'
+        }
+    ]
+];
+
 const bot = new TelegramBot(TOKEN, {
     polling: {
         interval: 300,
@@ -21,24 +44,28 @@ const bot = new TelegramBot(TOKEN, {
         params: {
           timeout: 10
         }
-      }
+    }
 });
 
-bot.on('inline_query', query => {
-    const results = [];
+bot.on('callback_query', query => {
+    const { chat, message_id, text } = query.message;
 
-    for (let i = 0; i < 5; i++) {
-        results.push({
-            type: 'article',
-            id: i.toString(),
-            title: `Title ${i}`,
-            input_message_content: {
-                message_text: `Article #${i + 1}`
-            }
-        })
+    switch (query.data) {
+        case 'forward':
+            // to, from, what
+            bot.forwardMessage(chat.id, chat.id, message_id);
+            break;
     }
 
-    bot.answerInlineQuery(query.id, results, {
-        cache_time: 0
-    });
+    bot.answerCallbackQuery(query.id);
+});
+
+bot.onText(/\/start/, (msg, [source, match]) => {
+    const chatId = msg.chat.id;
+
+    bot.sendMessage(chatId, 'Keyboard', {
+        reply_markup: {
+            inline_keyboard
+        }
+    })
 });
