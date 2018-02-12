@@ -60,6 +60,15 @@ bot.on('callback_query', query => {
                 reply_to_message_id: message_id
             });
             break;
+        case 'edit':
+            bot.editMessageText(`${text} (edited)`, {
+                chat_id: chat.id,
+                message_id,
+                reply_markup: {
+                    inline_keyboard
+                }
+            });
+            break;
     }
 
     bot.answerCallbackQuery(query.id);
