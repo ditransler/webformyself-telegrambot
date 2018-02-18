@@ -24,10 +24,10 @@ const bot = new TelegramBot(TOKEN, {
     }
 });
 
-const coords = [59.928831, 30.360586];
-
-bot.onText(/\/loc$/, msg => {
+bot.onText(/\/contact/, msg => {
     const chatId = msg.chat.id;
 
-    bot.sendLocation(chatId, ...coords);
+    bot.sendContact(chatId, '89292002000', 'WebForMyself', {
+        last_name: 'Surname'
+    });
 });
