@@ -24,22 +24,46 @@ const bot = new TelegramBot(TOKEN, {
     }
 });
 
-// Stickers should be in the WEBP format
-// https://developers.google.com/speed/webp/gallery1
+// http://techslides.com/demos/sample-videos/small.mp4
 
-bot.onText(/\/sticker1$/, msg => {
-    bot.sendSticker(msg.chat.id, './images/sticker.webp');
-});
-
-bot.onText(/\/sticker2$/, msg => {
+bot.onText(/\/video1$/, msg => {
     const chatId = msg.chat.id;
 
-    bot.sendMessage(chatId, 'Sending a sticker...');
+    bot.sendMessage(chatId, 'Uploading video...');
 
-    fs.readFile(path.resolve(__dirname, 'images/sticker.webp'), (err, sticker) => {
-        bot.sendSticker(chatId, sticker)
+    bot.sendVideo(chatId, 'http://techslides.com/demos/sample-videos/small.mp4');
+});
+
+bot.onText(/\/video2$/, msg => {
+    const chatId = msg.chat.id;
+
+    bot.sendMessage(chatId, 'Uploading video...');
+
+    bot.sendVideo(chatId, path.resolve(__dirname, 'video/small.mp4'));
+});
+
+bot.onText(/\/video3$/, msg => {
+    const chatId = msg.chat.id;
+
+    bot.sendMessage(chatId, 'Uploading video...');
+
+    fs.readFile(path.resolve(__dirname, 'video/small.mp4'), (err, video) => {
+        bot.sendVideo(chatId, video)
         .then(() => {
-            bot.sendMessage(chatId, 'The sticker has been sent.');
+            bot.sendMessage(chatId, 'The video has been uploaded.');
+        });
+    });
+});
+
+bot.onText(/\/video4$/, msg => {
+    const chatId = msg.chat.id;
+
+    bot.sendMessage(chatId, 'Uploading video...');
+
+    fs.readFile(path.resolve(__dirname, 'video/small.mp4'), (err, video) => {
+        bot.sendVideoNote(chatId, video)
+        .then(() => {
+            bot.sendMessage(chatId, 'The video has been uploaded.');
         });
     });
 });
