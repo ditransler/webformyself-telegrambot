@@ -24,46 +24,10 @@ const bot = new TelegramBot(TOKEN, {
     }
 });
 
-// http://techslides.com/demos/sample-videos/small.mp4
+const coords = [59.928831, 30.360586];
 
-bot.onText(/\/video1$/, msg => {
+bot.onText(/\/loc$/, msg => {
     const chatId = msg.chat.id;
 
-    bot.sendMessage(chatId, 'Uploading video...');
-
-    bot.sendVideo(chatId, 'http://techslides.com/demos/sample-videos/small.mp4');
-});
-
-bot.onText(/\/video2$/, msg => {
-    const chatId = msg.chat.id;
-
-    bot.sendMessage(chatId, 'Uploading video...');
-
-    bot.sendVideo(chatId, path.resolve(__dirname, 'video/small.mp4'));
-});
-
-bot.onText(/\/video3$/, msg => {
-    const chatId = msg.chat.id;
-
-    bot.sendMessage(chatId, 'Uploading video...');
-
-    fs.readFile(path.resolve(__dirname, 'video/small.mp4'), (err, video) => {
-        bot.sendVideo(chatId, video)
-        .then(() => {
-            bot.sendMessage(chatId, 'The video has been uploaded.');
-        });
-    });
-});
-
-bot.onText(/\/video4$/, msg => {
-    const chatId = msg.chat.id;
-
-    bot.sendMessage(chatId, 'Uploading video...');
-
-    fs.readFile(path.resolve(__dirname, 'video/small.mp4'), (err, video) => {
-        bot.sendVideoNote(chatId, video)
-        .then(() => {
-            bot.sendMessage(chatId, 'The video has been uploaded.');
-        });
-    });
+    bot.sendLocation(chatId, ...coords);
 });
