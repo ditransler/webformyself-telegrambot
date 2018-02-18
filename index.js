@@ -24,12 +24,18 @@ const bot = new TelegramBot(TOKEN, {
     }
 });
 
-bot.onText(/\/pic$/, msg => {
-    bot.sendPhoto(msg.chat.id, fs.readFileSync(path.resolve(__dirname, 'images/cat.jpg')));
+bot.onText(/\/audio$/, msg => {
+    bot.sendAudio(msg.chat.id, './audio/wind_of_change.mp3');
 });
 
-bot.onText(/\/pic2$/, msg => {
-    bot.sendPhoto(msg.chat.id, './images/cat.jpg', {
-        caption: 'This is a cat'
+bot.onText(/\/audio2$/, msg => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, 'Start audio uploading...');
+
+    fs.readFile(path.resolve(__dirname, 'audio/wind_of_change.mp3'), (err, data) => {
+        bot.sendAudio(chatId, data)
+        .then(() => {
+            bot.sendMessage(chatId, 'Audio uploading is finished.')
+        });
     });
 });
