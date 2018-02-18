@@ -24,18 +24,21 @@ const bot = new TelegramBot(TOKEN, {
     }
 });
 
-bot.onText(/\/audio$/, msg => {
-    bot.sendAudio(msg.chat.id, './audio/wind_of_change.mp3');
+bot.onText(/\/doc1$/, msg => {
+    bot.sendDocument(msg.chat.id, 'docs/wfm.xlsx');
 });
 
-bot.onText(/\/audio2$/, msg => {
+bot.onText(/\/doc2$/, msg => {
     const chatId = msg.chat.id;
-    bot.sendMessage(chatId, 'Start audio uploading...');
 
-    fs.readFile(path.resolve(__dirname, 'audio/wind_of_change.mp3'), (err, data) => {
-        bot.sendAudio(chatId, data)
+    bot.sendMessage(chatId, 'Upload start...');
+
+    fs.readFile(path.resolve(__dirname, 'docs/wfm.zip'), (err, file) => {
+        bot.sendDocument(chatId, file, {
+            caption: 'Additional text'
+        })
         .then(() => {
-            bot.sendMessage(chatId, 'Audio uploading is finished.')
+            bot.sendMessage(chatId, 'Updload finished.');
         });
     });
 });
