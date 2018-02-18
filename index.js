@@ -1,4 +1,4 @@
-process.env["NTBA_FIX_319"] = 1; // fix fot the node-telegram-bot-api module's issue
+process.env["NTBA_FIX_319"] = 1; // fix for the node-telegram-bot-api module's issue
 
 const fs = require('fs');
 const path = require('path');
@@ -14,29 +14,6 @@ const TOKEN = fs.readFileSync(toketPath, 'utf8', (err, data) => {
 
 console.log('Bot has been started ...');
 
-const inline_keyboard = [
-    [
-        {
-            text: 'Forward',
-            callback_data: 'forward'
-        },
-        {
-            text: 'Reply',
-            callback_data: 'reply'
-        }
-    ],
-    [
-        {
-            text: 'Edit',
-            callback_data: 'edit'
-        },
-        {
-            text: 'Delete',
-            callback_data: 'delete'
-        }
-    ]
-];
-
 const bot = new TelegramBot(TOKEN, {
     polling: {
         interval: 300,
@@ -47,42 +24,12 @@ const bot = new TelegramBot(TOKEN, {
     }
 });
 
-bot.on('callback_query', query => {
-    const { chat, message_id, text } = query.message;
-
-    switch (query.data) {
-        case 'forward':
-            // to, from, what
-            bot.forwardMessage(chat.id, chat.id, message_id);
-            break;
-        case 'reply':
-            bot.sendMessage(chat.id, 'Answer the message...', {
-                reply_to_message_id: message_id
-            });
-            break;
-        case 'edit':
-            bot.editMessageText(`${text} (edited)`, {
-                chat_id: chat.id,
-                message_id,
-                reply_markup: {
-                    inline_keyboard
-                }
-            });
-            break;
-        case 'delete':
-            bot.deleteMessage(chat.id, message_id);
-            break;
-    }
-
-    bot.answerCallbackQuery(query.id);
+bot.onText(/\/pic$/, msg => {
+    bot.sendPhoto(msg.chat.id, fs.readFileSync(path.resolve(__dirname, 'images/cat.jpg')));
 });
 
-bot.onText(/\/start/, (msg, [source, match]) => {
-    const chatId = msg.chat.id;
-
-    bot.sendMessage(chatId, 'Keyboard', {
-        reply_markup: {
-            inline_keyboard
-        }
-    })
+bot.onText(/\/pic2$/, msg => {
+    bot.sendPhoto(msg.chat.id, './images/cat.jpg', {
+        caption: 'This is a cat'
+    });
 });
