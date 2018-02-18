@@ -24,21 +24,22 @@ const bot = new TelegramBot(TOKEN, {
     }
 });
 
-bot.onText(/\/doc1$/, msg => {
-    bot.sendDocument(msg.chat.id, 'docs/wfm.xlsx');
+// Stickers should be in the WEBP format
+// https://developers.google.com/speed/webp/gallery1
+
+bot.onText(/\/sticker1$/, msg => {
+    bot.sendSticker(msg.chat.id, './images/sticker.webp');
 });
 
-bot.onText(/\/doc2$/, msg => {
+bot.onText(/\/sticker2$/, msg => {
     const chatId = msg.chat.id;
 
-    bot.sendMessage(chatId, 'Upload start...');
+    bot.sendMessage(chatId, 'Sending a sticker...');
 
-    fs.readFile(path.resolve(__dirname, 'docs/wfm.zip'), (err, file) => {
-        bot.sendDocument(chatId, file, {
-            caption: 'Additional text'
-        })
+    fs.readFile(path.resolve(__dirname, 'images/sticker.webp'), (err, sticker) => {
+        bot.sendSticker(chatId, sticker)
         .then(() => {
-            bot.sendMessage(chatId, 'Updload finished.');
+            bot.sendMessage(chatId, 'The sticker has been sent.');
         });
     });
 });
