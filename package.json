@@ -1,9 +1,10 @@
 {
-  "name": "webformyself-telegrambot",
+  "name": "webformyself-cinema-telegrambot",
   "version": "0.0.1",
   "description": "Edu project for the Telegram-bot master course by WebForMyself",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
   },
   "author": "Dmitriy Beglov",
   "license": "MIT",
