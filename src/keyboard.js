@@ -10,7 +10,16 @@ module.exports = {
             keyboardButtons.home.favourite
         ]
     ],
-    films: [
-
+    film: [
+        [
+            keyboardButtons.film.random
+        ],
+        [
+            keyboardButtons.film.action,
+            keyboardButtons.film.comedy
+        ],
+        [
+            keyboardButtons.back
+        ]
     ]
 };

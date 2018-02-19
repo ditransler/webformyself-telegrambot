@@ -13,14 +13,26 @@ const bot = new TelegramBot(config.TOKEN, {
 });
 
 bot.on('message', msg => {
-    console.log('Working, ', msg.from.first_name);
+    const chatId = helpers.getChatId(msg);
 
     switch(msg.text) {
         case keyboardButtons.home.favourite:
             break;
         case keyboardButtons.home.films:
+            bot.sendMessage(chatId, `Выберите жанр:`, {
+                reply_markup: {
+                    keyboard: keyboard.film
+                }
+            });
             break;
         case keyboardButtons.home.cinemas:
+            break;
+        case keyboardButtons.back:
+            bot.sendMessage(chatId, `Что хотите посмотреть?`, {
+                reply_markup: {
+                    keyboard: keyboard.home
+                }
+            });
             break;
     }
 });
