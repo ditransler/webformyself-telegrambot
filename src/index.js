@@ -6,6 +6,7 @@ const helpers = require('./helpers');
 const config = require('../config');
 const keyboard = require('./keyboard');
 const keyboardButtons = require('./keyboard-buttons');
+const database = require('../database.json');
 
 helpers.logStart();
 
@@ -13,6 +14,14 @@ mongoose.connect(config.DB_URL)
 .then(() => console.log('MongoDB connected.'))
 .catch((err) => console.log('MongoDB connection failed', err));
 
+// Import models
+require('./models/film.model');
+
+const Film = mongoose.model('films');
+
+// database.films.forEach(f => new Film(f).save());
+
+// ========================================
 const bot = new TelegramBot(config.TOKEN, {
     polling: true
 });

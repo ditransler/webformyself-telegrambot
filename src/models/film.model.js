@@ -21,7 +21,7 @@ const FilmSchema = new Schema({
         type: Number
     },
     length: {
-        type: Number
+        type: String
     },
     country: {
         type: String
