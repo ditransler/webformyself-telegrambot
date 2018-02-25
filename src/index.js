@@ -74,6 +74,25 @@ bot.onText(/\/start/, msg => {
 
 function sendFilmsByQuery(chatId, query) {
     Film.find(query).then(films => {
-        console.log(films);
+
+        const html = films.map((f, i) => {
+            return `<b>${i + 1})</b> ${f.name} - /f${f.uuid}`
+        }).join('\n');
+
+        sendHTML(chatId, html, 'films');
     });
+}
+
+function sendHTML(chatId, html, kbName = null) {
+    const options = {
+        parse_mode: 'HTML'
+    };
+
+    if (kbName) {
+        options['reply_markup'] = {
+            keyboard: keyboard[kbName]
+        }
+    }
+
+    bot.sendMessage(chatId, html, options);
 }
