@@ -70,6 +70,45 @@ bot.onText(/\/start/, msg => {
     });
 });
 
+bot.onText(/\/f(.+)/, (msg, [source, match]) => {
+    const chatId = helpers.getChatId(msg);
+    const filmUuid = helpers.getItemUuid(source);
+
+    Film.findOne({uuid: filmUuid}).then(film => {
+        const caption = `
+            Название: ${film.name}\n
+            Год: ${film.year}\n
+            Рейтинг: ${film.rate}\n
+            Длительность: ${film.length}\n
+            Страна: ${film.country}
+        `.replace(/^ +| +$/gm, '');
+
+        bot.sendPhoto(chatId, film.picture, {
+            caption,
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        {
+                            text: 'Добавить в избранное',
+                            callback_data: film.uuid
+                        },
+                        {
+                            text: 'Показать кинотеатры',
+                            callback_data: film.uuid
+                        }
+                    ],
+                    [
+                        {
+                            text: `Кинопоиск ${film.name}`,
+                            url: film.link
+                        }
+                    ]
+                ]
+            }
+        })
+    })
+});
+
 // =========================================
 
 function sendFilmsByQuery(chatId, query) {
