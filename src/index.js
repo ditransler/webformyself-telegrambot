@@ -21,7 +21,7 @@ const Film = mongoose.model('films');
 
 // database.films.forEach(f => new Film(f).save());
 
-// ========================================
+// =========================================
 const bot = new TelegramBot(config.TOKEN, {
     polling: true
 });
@@ -38,6 +38,15 @@ bot.on('message', msg => {
                     keyboard: keyboard.film
                 }
             });
+            break;
+        case keyboardButtons.film.comedy:
+            sendFilmsByQuery(chatId, {type: 'comedy'});
+            break;
+        case keyboardButtons.film.action:
+            sendFilmsByQuery(chatId, {type: 'action'});
+            break;
+        case keyboardButtons.film.random:
+            sendFilmsByQuery(chatId, {});
             break;
         case keyboardButtons.home.cinemas:
             break;
@@ -60,3 +69,11 @@ bot.onText(/\/start/, msg => {
         }
     });
 });
+
+// =========================================
+
+function sendFilmsByQuery(chatId, query) {
+    Film.find(query).then(films => {
+        console.log(films);
+    });
+}
