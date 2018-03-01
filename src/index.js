@@ -16,10 +16,13 @@ mongoose.connect(config.DB_URL)
 
 // Import models
 require('./models/film.model');
+require('./models/cinema.model');
 
 const Film = mongoose.model('films');
+const Cinema = mongoose.model('cinemas');
 
-// database.films.forEach(f => new Film(f).save());
+// database.films.forEach(f => new Film(f).save().catch(err => console.log(err)));
+// database.cinemas.forEach(c => new Cinema(c).save().catch(err => console.log(err)));
 
 // =========================================
 const bot = new TelegramBot(config.TOKEN, {
