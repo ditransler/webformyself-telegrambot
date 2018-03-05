@@ -9,6 +9,8 @@
   "author": "Dmitriy Beglov",
   "license": "MIT",
   "dependencies": {
+    "geolib": "^2.0.24",
+    "lodash": "^4.17.5",
     "mongoose": "^5.0.6",
     "node-telegram-bot-api": "^0.30.0"
   },
