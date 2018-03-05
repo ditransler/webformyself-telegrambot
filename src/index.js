@@ -99,7 +99,18 @@ bot.onText(/\/f(.+)/, (msg, [source, match]) => {
     const chatId = helpers.getChatId(msg);
     const filmUuid = helpers.getItemUuid(source);
 
-    Film.findOne({uuid: filmUuid}).then(film => {
+    Promise.all([
+        Film.findOne({uuid: filmUuid}),
+        User.findOne({telegramId: msg.from.id})
+    ]).then(([film, user]) => {
+        let isFav = false;
+
+        if (user) {
+            isFav = user.films.includes(film.uuid);
+        }
+
+        const favText = isFav ? 'Удалить из избранного' : 'Добавить в избранное';
+
         const caption = `
             Название: ${film.name}\n
             Год: ${film.year}\n
@@ -114,10 +125,11 @@ bot.onText(/\/f(.+)/, (msg, [source, match]) => {
                 inline_keyboard: [
                     [
                         {
-                            text: 'Добавить в избранное',
+                            text: favText,
                             callback_data: JSON.stringify({
                                 type: ACTION_TYPE.TOGGLE_FAV_FILM,
-                                filmUuid: film.uuid
+                                filmUuid: film.uuid,
+                                isFav
                             })
                         },
                         {
@@ -137,7 +149,7 @@ bot.onText(/\/f(.+)/, (msg, [source, match]) => {
                 ]
             }
         })
-    })
+    });
 });
 
 bot.onText(/\/c(.+)/, (msg, [source, match]) => {
@@ -179,6 +191,7 @@ bot.onText(/\/c(.+)/, (msg, [source, match]) => {
 });
 
 bot.on('callback_query', query => {
+    const userId = query.from.id;
     let data;
 
     try {
@@ -191,6 +204,7 @@ bot.on('callback_query', query => {
 
     switch(type) {
         case ACTION_TYPE.TOGGLE_FAV_FILM:
+            toggleFavouriteFilm(userId, query.id, data);
             break;
         case ACTION_TYPE.SHOW_CINEMAS:
             break;
@@ -245,4 +259,36 @@ function getCinemasInCoords(chatId, location) {
 
         sendHTML(chatId, html, 'home');
     });
+}
+
+function toggleFavouriteFilm(userId, queryId, {filmUuid, isFav}) {
+    let userPromise;
+
+    User.findOne({telegramId: userId})
+    .then(user => {
+        if (user) {
+            if (isFav) {
+                user.films = user.films.filter(uuid => uuid !== filmUuid);
+            } else {
+                user.films.push(filmUuid);
+            }
+            userPromise = user;
+        } else {
+            userPromise = new User({
+                telegramId: userId,
+                films: [filmUuid]
+            })
+        }
+
+        return userPromise.save();
+    })
+    .then(_ => {
+        const answerText = isFav ? 'Удалено' : 'Добавлено';
+
+        bot.answerCallbackQuery({
+            callback_query_id: queryId,
+            text: answerText
+        })
+    })
+    .catch(err => console.log(err));
 }
