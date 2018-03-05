@@ -21,5 +21,14 @@ module.exports = {
         [
             keyboardButtons.back
         ]
+    ],
+    cinemas: [
+        [
+            {
+                text: 'Отправить местоположение',
+                request_location: true
+            }
+        ],
+        [keyboardButtons.back]
     ]
 };

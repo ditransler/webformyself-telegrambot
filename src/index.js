@@ -52,6 +52,11 @@ bot.on('message', msg => {
             sendFilmsByQuery(chatId, {});
             break;
         case keyboardButtons.home.cinemas:
+            bot.sendMessage(chatId, 'Отправить местоположение', {
+                reply_markup: {
+                    keyboard: keyboard.cinemas
+                }
+            })
             break;
         case keyboardButtons.back:
             bot.sendMessage(chatId, `Что хотите посмотреть?`, {
@@ -60,6 +65,10 @@ bot.on('message', msg => {
                 }
             });
             break;
+    }
+
+    if (msg.location) {
+        console.log(msg.location);
     }
 });
 
