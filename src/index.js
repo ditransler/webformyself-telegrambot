@@ -208,6 +208,7 @@ bot.on('callback_query', query => {
             toggleFavouriteFilm(userId, query.id, data);
             break;
         case ACTION_TYPE.SHOW_CINEMAS:
+            sendCinemasByQuery(userId, {uuid: {$in: data.cinemasUuids}});
             break;
         case ACTION_TYPE.SHOW_CINEMAS_MAP:
             break;
@@ -315,6 +316,18 @@ function showFavouriteFilms(chatId, userId) {
         }).join('\n');
 
         sendHTML(chatId, html, 'home');
+    })
+    .catch(err => console.log(err));
+}
+
+function sendCinemasByQuery(userId, query) {
+    Cinema.find(query)
+    .then(cinemas => {
+        const html = cinemas.map((c, i) => {
+            return `<b>${i + 1})</b> ${c.name} - /c${c.uuid}`;
+        }).join('\n');
+
+        sendHTML(userId, html, 'home');
     })
     .catch(err => console.log(err));
 }
