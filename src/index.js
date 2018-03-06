@@ -215,6 +215,7 @@ bot.on('callback_query', query => {
             bot.sendLocation(query.message.chat.id, lat, lon);
             break;
         case ACTION_TYPE.SHOW_FILMS:
+            sendFilmsByQuery(userId, {uuid: {$in: data.filmUuids}});
             break;
         default:
             console.log(`"${type}" doesn't match any action type.`);
