@@ -222,6 +222,44 @@ bot.on('callback_query', query => {
     }
 });
 
+bot.on('inline_query', query => {
+    Film.find({})
+    .then(films => {
+        const results = films.map(f => {
+            const caption = `
+                Название: ${f.name}\n
+                Год: ${f.year}\n
+                Рейтинг: ${f.rate}\n
+                Длительность: ${f.length}\n
+                Страна: ${f.country}
+            `.replace(/^ +| +$/gm, '');
+
+            return {
+                id: f.uuid,
+                type: 'photo',
+                photo_url: f.picture,
+                thumb_url: f.picture,
+                caption,
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: `Кинопоиск: ${f.name}`,
+                                url: f.link
+                            }
+                        ]
+                    ]
+                }
+            };
+        });
+
+        bot.answerInlineQuery(query.id, results, {
+            cache_time: 0
+        });
+    })
+    .catch(err => console.log(err));
+});
+
 // =========================================
 
 function sendFilmsByQuery(chatId, query) {
