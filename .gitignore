@@ -12,6 +12,7 @@ npm-debug.log*
 # Private
 token.txt
 payment-token.txt
+config.js
 
 # Misc
 .DS_Store
